@@ -1,0 +1,38 @@
+{
+    "parser": "@typescript-eslint/parser",
+    "env": {
+        "node": true,
+        "es6": true
+    },
+    "extends": [
+        "plugin:@typescript-eslint/recommended",
+        "prettier",
+        "prettier/@typescript-eslint"
+    ],
+    "parserOptions": {
+        "ecmaVersion": 2018,
+        "sourceType": "module"
+    },
+    "plugins": ["@typescript-eslint"],
+    "rules": {
+        "max-classes-per-file": [2, 1],
+        "no-unused-vars": 1,
+        "indent": ["error", 2],
+        "linebreak-style": ["error", "unix"],
+        "quotes": ["error", "single"],
+        "semi": ["error", "always"],
+        "max-len": ["error", 120, 4],
+        "no-console": 1,
+        "no-multiple-empty-lines": ["error", { "max": 1, "maxEOF": 1 }],
+        "no-empty": 2,
+        "object-literal-sort-keys": 0,
+        "ordered-imports": 0,
+        "prefer-for-of": 0,
+        "handle-callback-err": 2,
+        "no-extra-semi": 2,
+        "trailing-comma": 0,
+        "@typescript-eslint/interface-name-prefix": ["error", "always"],
+        "@typescript-eslint/camelcase": ["warn", { "properties": "never" }],
+        "arrow-parens": 0
+    }
+}

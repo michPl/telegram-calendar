@@ -1,0 +1,51 @@
+{
+  "name": "@michpl/telegram-calendar",
+  "version": "1.0.0",
+  "description": "Calendar for telegram bot",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "scripts": {
+    "test": "mocha --require ts-node/register tests/**/*.spec.{ts,js}",
+    "typecheck": "tsc --noEmit",
+    "build": "npm run clean && tsc",
+    "clean": "rm -rf lib",
+    "lint": "eslint ./src/**/*.ts",
+    "coverage": "nyc npm run test",
+    "prepare": "npm run build",
+    "prepublishOnly": "npm run test && npm run lint",
+    "preversion": "npm run lint",
+    "postversion": "git push && git push --tags"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/michPl/telegram-calendar.git"
+  },
+  "bugs": {
+    "url": "https://github.com/michPl/telegram-calendar/issues/"
+  },
+  "keywords": [
+    "calendar",
+    "telegram",
+    "bot"
+  ],
+  "author": "michPl <plehanov_michael@mail.ru>",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/chai": "^4.2.7",
+    "@types/mocha": "^5.2.7",
+    "@types/node": "^12.12.21",
+    "@typescript-eslint/eslint-plugin": "^2.12.0",
+    "@typescript-eslint/parser": "^2.12.0",
+    "chai": "^4.2.0",
+    "eslint": "^6.7.2",
+    "eslint-config-prettier": "^6.7.0",
+    "eslint-plugin-prettier": "^3.1.2",
+    "mocha": "^6.2.2",
+    "nyc": "^14.1.1",
+    "ts-node": "^8.5.4",
+    "typescript": "^3.7.3"
+  },
+  "files": [
+    "lib/**/*"
+  ]
+}
