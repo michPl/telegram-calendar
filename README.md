@@ -14,3 +14,35 @@ Simple and easy service to create a calendar in telegram
 | ignoreButtonValue | string or number         | 0          | Value of the button for empty buttons                                                |
 | minDate           | string or number or Date | null       | Min date                                                                             |
 | maxDate           | string or number or Date | null       | Max date                                                                             |
+
+
+## Using sample
+```JS
+const {Calendar} = require('telegram-calendar');
+
+const calendar = new Calendar();
+telegramAdapter.send = {
+  parse_mode: 'html',
+  reply_markup: JSON.stringify({
+    inline_keyboard: calendar.getPage(new Date())
+  })
+}
+```
+
+## Additional Information
+If for any reason you want to change the contents of a buttons, you can inherit and override the createCallbackButton function. It implements as protected
+
+```JS
+const {Calendar} = require('telegram-calendar');
+
+module.exports = class NewCalendar extends Calendar {
+    createCallbackButton(name, value, action = null) {
+        return {
+            name,
+            type: 'new type',
+            date,
+            action
+        };
+    }
+};
+```

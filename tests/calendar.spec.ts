@@ -1,6 +1,6 @@
 import { expect } from 'chai';
-import { CalendarService, IOptions, ICallbackButton } from '../src';
-import { days as testDays, years as testYears } from './calendarActualDates';
+import { Calendar, IOptions, ICallbackButton, } from '../src';
+import { days as testDays, years as testYears } from './data/calendarActualDates';
 
 describe('Calendar', () => {
   let actualDays: ICallbackButton[][];
@@ -14,7 +14,7 @@ describe('Calendar', () => {
   describe('with default options', () => {
     it('successfully page', () => {
       const options: IOptions = {};
-      const calendar = new CalendarService(options);
+      const calendar = new Calendar(options);
       const date = new Date('2013-12-13');
 
       expect(actualDays).to.deep.equal(calendar.getPage(date));
@@ -22,7 +22,7 @@ describe('Calendar', () => {
 
     it('successfully years', () => {
       const options: IOptions = {};
-      const calendar = new CalendarService(options);
+      const calendar = new Calendar(options);
       const date = new Date('2013-12-13');
 
       expect(actualYears).to.deep.equal(calendar.getYears(date));
@@ -30,14 +30,14 @@ describe('Calendar', () => {
 
     it('wrong input date throws error for page', () => {
       const options: IOptions = {};
-      const calendar = new CalendarService(options);
+      const calendar = new Calendar(options);
       const date = 'wrong date';
       expect(() => calendar.getPage(date)).to.throw(`Invalid date: ${date}`);
     });
 
     it('wrong input date throws error for years', () => {
       const options: IOptions = {};
-      const calendar = new CalendarService(options);
+      const calendar = new Calendar(options);
       const date = 'wrong date';
       expect(() => calendar.getYears(date)).to.throw(`Invalid date: ${date}`);
     });
@@ -47,7 +47,7 @@ describe('Calendar', () => {
     describe('weekDayNames', () => {
       it('successfully', () => {
         const options: IOptions = { weekDayNames: ['1', '2', '3', '4', '5', '6', '7'] };
-        const calendar = new CalendarService(options);
+        const calendar = new Calendar(options);
         const date = new Date('2013-12-13');
         const days = calendar.getPage(date);
 
@@ -64,14 +64,14 @@ describe('Calendar', () => {
 
       it('count week days not equal 7 throws error', () => {
         const options: IOptions = { weekDayNames: ['1', '2', '3', '4', '5', '6'] };
-        expect(() => new CalendarService(options)).to.throw('Wrong week day names');
+        expect(() => new Calendar(options)).to.throw('Wrong week day names');
       });
     });
 
     describe('monthNames', () => {
       it('successfully', () => {
         const options: IOptions = { monthNames: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'] };
-        const calendar = new CalendarService(options);
+        const calendar = new Calendar(options);
         const date = new Date('2013-12-13');
         const days = calendar.getPage(date);
 
@@ -80,14 +80,14 @@ describe('Calendar', () => {
 
       it('count month names not equal 12 throws error', () => {
         const options: IOptions = { monthNames: ['1', '2', '3', '4', '5', '6'] };
-        expect(() => new CalendarService(options)).to.throw('Wrong month names');
+        expect(() => new Calendar(options)).to.throw('Wrong month names');
       });
     });
 
     describe('minDate', () => {
       it('page when minDate less than input date for 1 day', () => {
         const options: IOptions = { minDate: '2013-12-12' };
-        const calendar = new CalendarService(options);
+        const calendar = new Calendar(options);
         const date = new Date('2013-12-13');
         const days = calendar.getPage(date);
         const emptyButton = { text: ' ', callback_data: '{\"type\":\"calendar\",\"date\":0,\"action\":null}' };
@@ -107,7 +107,7 @@ describe('Calendar', () => {
 
       it('years when minDate set', () => {
         const options: IOptions = { minDate: '2013-12-12' };
-        const calendar = new CalendarService(options);
+        const calendar = new Calendar(options);
         const date = new Date('2013-12-13');
         const years = calendar.getYears(date);
 
@@ -116,21 +116,21 @@ describe('Calendar', () => {
 
       it('wrong minDate fixies by null', () => {
         const options: IOptions = { minDate: 'wrong date' };
-        const calendar = new CalendarService(options);
+        const calendar = new Calendar(options);
         const date = new Date('2013-12-13');
         expect(actualDays).to.deep.equal(calendar.getPage(date));
       });
 
       it('input date less than minDate throws error for page', () => {
         const options: IOptions = { minDate: '2013-12-14' };
-        const calendar = new CalendarService(options);
+        const calendar = new Calendar(options);
         const date = new Date('2013-12-13');
         expect(() => calendar.getPage(date)).to.throw(`Invalid date: ${date}`);
       });
 
       it('input date less than minDate throws error for years', () => {
         const options: IOptions = { minDate: '2013-12-14' };
-        const calendar = new CalendarService(options);
+        const calendar = new Calendar(options);
         const date = new Date('2013-12-13');
         expect(() => calendar.getYears(date)).to.throw(`Invalid date: ${date}`);
       });
@@ -139,7 +139,7 @@ describe('Calendar', () => {
     describe('maxDate', () => {
       it('page when maxDate more than input date for 1 day', () => {
         const options: IOptions = { maxDate: '2013-12-14' };
-        const calendar = new CalendarService(options);
+        const calendar = new Calendar(options);
         const date = new Date('2013-12-13');
         const days = calendar.getPage(date);
         const emptyButton = { text: ' ', callback_data: '{\"type\":\"calendar\",\"date\":0,\"action\":null}' };
@@ -153,7 +153,7 @@ describe('Calendar', () => {
 
       it('years when maxDate set', () => {
         const options: IOptions = { maxDate: '2026-12-12' };
-        const calendar = new CalendarService(options);
+        const calendar = new Calendar(options);
         const date = new Date('2013-12-13');
         const years = calendar.getYears(date);
 
@@ -162,21 +162,21 @@ describe('Calendar', () => {
 
       it('wrong maxDate fixies by null', () => {
         const options: IOptions = { maxDate: 'wrong date' };
-        const calendar = new CalendarService(options);
+        const calendar = new Calendar(options);
         const date = new Date('2013-12-13');
         expect(actualDays).to.deep.equal(calendar.getPage(date));
       });
 
       it('input date greater than minDate throws error for page', () => {
         const options: IOptions = { maxDate: '2013-12-12' };
-        const calendar = new CalendarService(options);
+        const calendar = new Calendar(options);
         const date = new Date('2013-12-13');
         expect(() => calendar.getPage(date)).to.throw(`Invalid date: ${date}`);
       });
 
       it('input date greater than minDate throws error for years', () => {
         const options: IOptions = { maxDate: '2013-12-12' };
-        const calendar = new CalendarService(options);
+        const calendar = new Calendar(options);
         const date = new Date('2013-12-13');
         expect(() => calendar.getYears(date)).to.throw(`Invalid date: ${date}`);
       });
@@ -184,7 +184,7 @@ describe('Calendar', () => {
 
     it('minDate > maxDate throws error', () => {
       const options: IOptions = { maxDate: '2013-12-12', minDate: '2013-12-14' };
-      expect(() => new CalendarService(options)).to.throw('Max date lower than min date');
+      expect(() => new Calendar(options)).to.throw('Max date lower than min date');
     });
   });
 
