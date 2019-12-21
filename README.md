@@ -1,4 +1,6 @@
-# Telegram calendar
+# Telegram
+
+[![Build Status](https://travis-ci.com/michPl/telegram-calendar.svg?token=MxJ3sEw6pDuswtREaQhk&branch=master)](https://travis-ci.com/michPl/telegram-calendar)
 
 Simple and easy service to create a calendar in telegram
 
