@@ -1,4 +1,4 @@
-interface IOptions {
+interface IBaseOptions {
   weekDayNames?: string[];
   monthNames?: string[];
   averageYears?: number;
@@ -6,26 +6,26 @@ interface IOptions {
   ignoreButtonValue?: string | number;
 }
 
-interface IInputOptions extends IOptions {
+export interface IOptions extends IBaseOptions {
   minDate?: string | number | Date;
   maxDate?: string | number | Date;
 }
 
-interface ICalendarOptions extends IOptions {
+interface ICalendarOptions extends IBaseOptions {
   minDate?: Date;
   maxDate?: Date;
   yearsInLine: number;
 }
 
-interface ICallbackButton {
+export interface ICallbackButton {
   text: string;
   callback_data: string;
 }
 
-class CalendarService {
+export class Calendar {
   private options: ICalendarOptions;
 
-  constructor({ minDate = null, maxDate = null, ...options }: IInputOptions = {}) {
+  constructor({ minDate = null, maxDate = null, ...options }: IOptions = {}) {
     const defaultOptions: ICalendarOptions = {
       weekDayNames: ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'],
       monthNames: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
@@ -229,5 +229,3 @@ class CalendarService {
     return optionsDate.getFullYear() === date.getFullYear() && optionsDate.getMonth() === date.getMonth();
   }
 }
-
-export { CalendarService, IInputOptions as IOptions, ICallbackButton };
