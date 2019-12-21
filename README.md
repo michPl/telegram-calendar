@@ -4,6 +4,9 @@
 
 Simple and easy service to create a calendar in telegram
 
+![Demo days](https://github.com/michPl/telegram-calendar/blob/master/images/demo1.png "Demo days")
+![Demo years](https://github.com/michPl/telegram-calendar/blob/master/images/demo2.png "Demo years")
+
 ## Options
 | name              | type       | default    | description          |
 |-------------------|------------|------------|----------------------|
