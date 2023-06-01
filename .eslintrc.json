@@ -6,8 +6,7 @@
     },
     "extends": [
         "plugin:@typescript-eslint/recommended",
-        "prettier",
-        "prettier/@typescript-eslint"
+        "prettier"
     ],
     "parserOptions": {
         "ecmaVersion": 2018,
@@ -31,8 +30,18 @@
         "handle-callback-err": 2,
         "no-extra-semi": 2,
         "trailing-comma": 0,
-        "@typescript-eslint/interface-name-prefix": ["error", "always"],
-        "@typescript-eslint/camelcase": ["warn", { "properties": "never" }],
-        "arrow-parens": 0
+        "camelcase": ["warn", { "properties": "never" }],
+        "arrow-parens": 0,
+        "@typescript-eslint/naming-convention": [
+            "error",
+            {
+                "selector": "interface",
+                "format": ["PascalCase"],
+                "custom": {
+                    "regex": "^I[A-Z]",
+                    "match": true
+                }
+            }
+        ]
     }
 }
