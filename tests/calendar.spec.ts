@@ -182,6 +182,60 @@ describe('Calendar', () => {
       });
     });
 
+    describe('startFromSunday', () => {
+      it('successfully with default week days', () => {
+        const options: IOptions = { startFromSunday: true };
+        const calendar = new Calendar(options);
+        const date = new Date('2013-12-13');
+        const days = calendar.getPage(date);
+
+        expect(['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map((name) => ({
+          text: name,
+          callback_data: '{\"type\":\"calendar\",\"date\":0,\"action\":null}',
+        }))).to.deep.equal(days[1]);
+        expect(['1', '2', '3', '4', '5', '6', '7'].map((dayNumber) => ({
+          text: dayNumber,
+          callback_data: `{\"type\":\"calendar\",\"date\":\"2013-12-0${dayNumber}\",\"action\":null}`,
+        }))).to.deep.equal(days[2]);
+      });
+
+      it('successfully with changed week days', () => {
+        const options: IOptions = {
+          startFromSunday: true,
+          weekDayNames: ['1', '2', '3', '4', '5', '6', '7'],
+        };
+        const calendar = new Calendar(options);
+        const date = new Date('2013-12-13');
+        const days = calendar.getPage(date);
+
+        expect(['1', '2', '3', '4', '5', '6', '7'].map((name) => ({
+          text: name,
+          callback_data: '{\"type\":\"calendar\",\"date\":0,\"action\":null}',
+        }))).to.deep.equal(days[1]);
+        expect(['1', '2', '3', '4', '5', '6', '7'].map((dayNumber) => ({
+          text: dayNumber,
+          callback_data: `{\"type\":\"calendar\",\"date\":\"2013-12-0${dayNumber}\",\"action\":null}`,
+        }))).to.deep.equal(days[2]);
+      });
+
+      it('successfully when month begins not from Sunday', () => {
+        const options: IOptions = { startFromSunday: true };
+        const calendar = new Calendar(options);
+        const date = new Date('2016-07-11');
+        const days = calendar.getPage(date);
+
+        expect([
+          { text: ' ', callback_data: '{\"type\":\"calendar\",\"date\":0,\"action\":null}' },
+          { text: ' ', callback_data: '{\"type\":\"calendar\",\"date\":0,\"action\":null}' },
+          { text: ' ', callback_data: '{\"type\":\"calendar\",\"date\":0,\"action\":null}' },
+          { text: ' ', callback_data: '{\"type\":\"calendar\",\"date\":0,\"action\":null}' },
+          { text: ' ', callback_data: '{\"type\":\"calendar\",\"date\":0,\"action\":null}' },
+          { text: '1', callback_data: '{\"type\":\"calendar\",\"date\":\"2016-07-01\",\"action\":null}' },
+          { text: '2', callback_data: '{\"type\":\"calendar\",\"date\":\"2016-07-02\",\"action\":null}' }
+        ]).to.deep.equal(days[2]);
+      });
+    });
+
     it('minDate > maxDate throws error', () => {
       const options: IOptions = { maxDate: '2013-12-12', minDate: '2013-12-14' };
       expect(() => new Calendar(options)).to.throw('Max date lower than min date');

@@ -4,6 +4,7 @@ interface IBaseOptions {
   averageYears?: number;
   callbackDataType?: string;
   ignoreButtonValue?: string | number;
+  startFromSunday?: boolean;
 }
 
 export interface IOptions extends IBaseOptions {
@@ -24,17 +25,22 @@ export interface ICallbackButton {
 
 export class Calendar {
   private options: ICalendarOptions;
+  private static WeekLength = 7;
 
   constructor({ minDate = null, maxDate = null, ...options }: IOptions = {}) {
+    const defaultWeekDayNames = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'];
     const defaultOptions: ICalendarOptions = {
-      weekDayNames: ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'],
+      weekDayNames: options.startFromSunday ?
+        [defaultWeekDayNames.at(-1), ...defaultWeekDayNames.slice(0, -1)] :
+        defaultWeekDayNames,
       monthNames: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
       minDate: this.sanitizeMinMaxDate(minDate),
       maxDate: this.sanitizeMinMaxDate(maxDate),
       averageYears: 14,
       callbackDataType: 'calendar',
       ignoreButtonValue: 0,
-      yearsInLine: 7
+      yearsInLine: 7,
+      startFromSunday: false,
     };
 
     this.options = {
@@ -46,11 +52,11 @@ export class Calendar {
       throw new Error('Max date lower than min date');
     }
 
-    if (!this.options.weekDayNames || this.options.weekDayNames.length !== 7) {
+    if (this.options.weekDayNames?.length !== Calendar.WeekLength) {
       throw new Error('Wrong week day names');
     }
 
-    if (!this.options.monthNames || this.options.monthNames.length !== 12) {
+    if (this.options.monthNames?.length !== 12) {
       throw new Error('Wrong month names');
     }
   }
@@ -112,17 +118,18 @@ export class Calendar {
   private isDayAvailable(date: Date, month: number): boolean {
     if (this.options.minDate && date < this.options.minDate) return false;
     if (this.options.maxDate && date > this.options.maxDate) return false;
-    if (date.getMonth() !== month) return false;
 
-    return true;
+    return date.getMonth() === month;
   }
 
   private addDays(date: Date): ICallbackButton[][] {
+    const sundayOffset = this.options.startFromSunday ? 1 : -5;
+    const notSundayOffset = this.options.startFromSunday ? 1 : 2;
     const firstDay = this.getStartOfMonth(date);
     const lastDay = this.getEndOfMonth(date);
     const month = date.getMonth();
     const isSunday = firstDay.getDay() === 0;
-    const startDay = -firstDay.getDay() + (isSunday ? -5 : 2);
+    const startDay = -firstDay.getDay() + (isSunday ? sundayOffset : notSundayOffset);
     const startDate = new Date(firstDay.getFullYear(), firstDay.getMonth(), startDay);
     const result: ICallbackButton[][] = [];
 
@@ -130,7 +137,7 @@ export class Calendar {
     while (day <= lastDay) {
       const days: ICallbackButton[] = [];
       let newDay: Date;
-      for (let i = 0; i < 7; i++) {
+      for (let i = 0; i < Calendar.WeekLength; i++) {
         newDay = this.addDay(day, i);
         (this.isDayAvailable(newDay, month)) ?
           days.push(this.createCallbackButton(String(newDay.getDate()), this.formatAnswer(newDay))) :
